@@ -1,0 +1,160 @@
+Firestore veritabanı oluşturma
+
+Firebase Console içinde:
+
+Build
+→ Firestore Database
+// ignore: non_constant_identifier_names
+→ Create database
+
+Ardından iki seçenek çıkar:
+
+Test mode
+
+Ders, deneme ve basit uygulamalar için kullanılabilir.
+
+Test mode
+
+Bu modda okuma ve yazma geçici olarak açıktır.
+
+Production mode
+
+Gerçek uygulamalarda kullanılır.
+
+Production mode
+
+Bu modda erişimler varsayılan olarak kapalıdır. Security Rules yazmak gerekir.
+
+Sonra veritabanı konumunu seç:
+
+eur3
+
+veya sana en yakın uygun bölge.
+
+Ardından:
+
+Enable
+
+butonuna bas.
+
+4. Koleksiyon oluşturma
+
+Firestore Database açıldıktan sonra:
+
+Start collection
+
+butonuna bas.
+
+Collection ID:
+
+ogrenciler
+
+Sonra:
+
+Next
+5. İlk belgeyi oluşturma
+
+Document ID kısmında:
+
+Auto-ID
+
+seç.
+
+Sonra alanları ekle:
+
+Alan	Tür	Değer
+ad	string	Ahmet
+sinif	string	10/A
+numara	number	125
+
+Son olarak:
+
+Save
+
+butonuna bas.
+
+Oluşacak yapı:
+
+ogrenciler
+    └── rastgeleBelgeId
+          ├── ad: "Ahmet"
+          ├── sinif: "10/A"
+          └── numara: 125
+6. Flutter projesini oluşturma
+flutter create ogrenci_test
+
+Proje klasörüne geç:
+
+cd ogrenci_test
+7. Flutter projesini Firebase’e bağlama
+
+Proje klasöründe:
+
+flutterfire configure
+
+Burada:
+
+Firebase projesini seç
+→ Kullanılacak platformları seç
+→ Enter
+
+İşlem sonunda şu dosya oluşur:
+
+lib/firebase_options.dart
+8. Firebase paketlerini projeye ekleme
+flutter pub add firebase_core
+flutter pub add cloud_firestore
+9. main.dart içinde Firebase’i başlatma
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp());
+}
+10. Firestore’a veri ekleme
+await FirebaseFirestore.instance
+    .collection('ogrenciler')
+    .add({
+  'ad': 'Ahmet',
+  'sinif': '10/A',
+  'numara': 125,
+});
+
+Bu kod çalışınca Firebase’de otomatik olarak şu yapı oluşur:
+
+ogrenciler
+    └── rastgeleBelgeId
+          ├── ad: "Ahmet"
+          ├── sinif: "10/A"
+          └── numara: 125
+Kısa ezber sırası
+Bilgisayara bir kez
+npm install -g firebase-tools
+firebase login
+dart pub global activate flutterfire_cli
+Firebase Console’da
+Proje oluştur
+→ Firestore Database
+→ Create database
+→ Test mode
+→ ogrenciler koleksiyonu
+Her yeni Flutter projesinde
+flutter create proje_adi
+cd proje_adi
+flutterfire configure
+flutter pub add firebase_core
+flutter pub add cloud_firestore
+main.dart
+await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+Çalıştırma
+flutter run

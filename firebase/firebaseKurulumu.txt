@@ -1,0 +1,177 @@
+Flutter–Firebase kurulum özeti
+1. Bilgisayara yalnızca bir kez kurulacaklar
+
+Bunlar global kurulumlardır. Her Flutter projesinde tekrar kurulmaz.
+
+Node.js kurulumu
+
+Kurulduğunu kontrol et:
+
+node -v
+npm -v
+Firebase CLI kurulumu
+npm install -g firebase-tools
+
+Kontrol:
+
+firebase --version
+Firebase hesabına giriş
+firebase login
+
+Başarılı girişten sonra genellikle aynı bilgisayarda tekrar giriş yapman gerekmez.
+
+FlutterFire CLI kurulumu
+dart pub global activate flutterfire_cli
+
+Kontrol:
+
+flutterfire --version
+
+flutterfire komutu bulunamazsa şu klasörün Windows PATH değişkeninde olması gerekir:
+
+C:\Users\KULLANICI_ADI\AppData\Local\Pub\Cache\bin
+2. Firebase Console’da her yeni uygulama için yapılacaklar
+
+Her proje için Firebase Console’da yeni bir Firebase projesi oluşturabilir veya mevcut bir Firebase projesini kullanabilirsin.
+
+Sıralama:
+
+Firebase Console
+→ Proje oluştur
+→ Build
+→ Firestore Database
+→ Create database
+
+Ders ve deneme uygulamalarında geçici olarak:
+
+Test mode
+
+Gerçek uygulamada:
+
+Production mode
+
+seçilir ve güvenlik kuralları hazırlanır.
+
+3. Her yeni Flutter projesinde yapılacaklar
+
+Önce Flutter projesini oluştur:
+
+flutter create ogrenci_projesi
+
+Proje klasörüne gir:
+
+cd ogrenci_projesi
+Firebase bağlantısını yapılandır
+
+Proje klasörünün içindeyken:
+
+flutterfire configure
+
+Bu işlem sırasında:
+
+Firebase projesi seçilir.
+Android, web veya kullanılacak diğer platformlar seçilir.
+Firebase uygulamaları kaydedilir.
+firebase_options.dart dosyası oluşturulur.
+
+Resmî FlutterFire kurulumunda flutterfire configure komutu her Flutter uygulamasını Firebase projesiyle eşleştirmek ve platform yapılandırmalarını oluşturmak için kullanılır.
+
+Oluşması gereken dosya:
+
+lib/firebase_options.dart
+4. Her projede gerekli Firebase paketlerini ekleme
+
+Temel Firebase paketi:
+
+flutter pub add firebase_core
+
+Cloud Firestore kullanacaksan:
+
+flutter pub add cloud_firestore
+
+Authentication kullanacaksan:
+
+flutter pub add firebase_auth
+
+Storage kullanacaksan:
+
+flutter pub add firebase_storage
+
+Yalnızca kullanacağın Firebase hizmetlerinin paketlerini eklemen yeterlidir.
+
+5. Her projede main.dart içinde Firebase’i başlatma
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  // Firebase baslatilmadan once Flutter hazirlanir.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Flutter uygulamasi Firebase projesine baglanir.
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  runApp(const MyApp());
+}
+
+Bu işlem her Firebase bağlantılı Flutter projesinde bulunmalıdır.
+
+6. Projeyi çalıştırma
+flutter run
+
+Yeni Firebase paketi eklendikten veya yapılandırma değiştirildikten sonra yalnızca hot reload yerine uygulamayı tamamen yeniden başlatmak daha sağlıklıdır.
+
+7. Sonradan yeni Firebase hizmeti eklenirse
+
+Örneğin projeye daha sonra Storage veya yeni bir platform eklediysen tekrar:
+
+flutterfire configure
+
+çalıştırabilirsin.
+
+Ardından ilgili paketi ekle:
+
+flutter pub add firebase_storage
+
+Bazı Firebase ürünleri eklendiğinde flutterfire configure, firebase_options.dart dosyasını yeni bilgilerle günceller.
+
+
+*******************************************************
+Kısa ezber tablosu
+Bilgisayara bir kez
+npm install -g firebase-tools
+firebase login
+dart pub global activate flutterfire_cli
+Her yeni Flutter–Firebase projesinde
+flutter create proje_adi
+cd proje_adi
+flutterfire configure
+flutter pub add firebase_core
+flutter pub add cloud_firestore
+main.dart
+await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+Son olarak
+flutter run
+Önemli ayrım
+firebase-tools
+→ Bilgisayara bir kez kurulur.
+
+flutterfire_cli
+→ Bilgisayara bir kez kurulur.
+
+firebase login
+→ Genellikle bir kez yapılır.
+
+flutterfire configure
+→ Her Flutter projesinde yapılır.
+
+firebase_core
+→ Her projenin pubspec.yaml dosyasına eklenir.
+
+cloud_firestore
+→ Firestore kullanılan her projeye eklenir.

@@ -1,0 +1,46 @@
+Firebase işlemlerinin kısa özeti
+Firestore’a ulaşma
+FirebaseFirestore.instance
+
+Uygulamanın bağlı olduğu Firestore veritabanına ulaşır.
+
+Koleksiyonu seçme
+.collection('ogrenciler')
+
+Firestore içindeki ogrenciler koleksiyonunu seçer.
+
+Yeni belge ekleme
+await ogrenciler.add({
+  'ad': ad,
+  'sinif': sinif,
+  'numara': numara,
+});
+
+Yeni öğrenci belgesi ekler. Belge kimliğini Firebase otomatik oluşturur.
+
+Verileri gerçek zamanlı okuma
+ogrenciler.snapshots()
+
+ogrenciler koleksiyonunu sürekli dinler. Veri değişince ekran otomatik yenilenir.
+
+Belgeleri alma
+snapshot.data!.docs
+
+Koleksiyonun içindeki bütün belgeleri getirir.
+
+Belgenin alanlarını alma
+belge.data()
+
+Belgenin içindeki ad, sinif ve numara alanlarını getirir.
+
+Belge kimliğini alma
+belge.id
+
+Firebase’in belge için oluşturduğu benzersiz kimliği verir.
+
+Belge silme
+await ogrenciler.doc(belgeId).delete();
+
+Belge kimliğine göre ilgili öğrenciyi Firestore’dan siler.
+
+Bu kod öğrenciler için Create, Read ve Delete işlemlerini içeriyor. Güncelleme işlemini daha sonra ayrı bir aşamada eklemek, konunun daha kolay anlaşılmasını sağlar.
